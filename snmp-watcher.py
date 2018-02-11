@@ -30,20 +30,27 @@ from snmp_watcher.host import Host
 from snmp_watcher.configuration_model import ConfigurationModel
 from snmp_watcher.configuration_host import ConfigurationHost
 
+# Parse command line arguments
+parser = argparse.ArgumentParser(description='Read SNMP values')
+parser.add_argument('--group', dest='groups', type=str, action='append',
+                    help='values group to monitor')
+parser.add_argument('configuration', type=str, action='store', nargs='+',
+                    help='configuration file')
+arguments = parser.parse_args()
+# If no groups were specified list all services groups
+if not arguments.groups:
+	arguments.groups = ['*']
+
 # Load models
 for filename in os.listdir(DIR_MODELS):
     model_name = filename.split('.conf')[0]
     snmp_watcher.common.models[model_name] = ConfigurationModel(
         os.path.join(DIR_MODELS, filename),
-        ('Ricoh Levels', 'Ricoh Counters'))
+        arguments.groups)
 
 for key in snmp_watcher.common.models:
     model = snmp_watcher.common.models[key]
 
-parser = argparse.ArgumentParser(description='Read SNMP values')
-parser.add_argument('configuration', type=str, nargs='+',
-                    help='configuration file')
-arguments = parser.parse_args()
 for filename in arguments.configuration:
     assert(os.path.exists(filename))
     if os.path.isfile(filename):
