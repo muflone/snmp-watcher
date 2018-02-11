@@ -32,6 +32,7 @@ from pysnmp.hlapi import (
 
 from .snmp_value import SNMPValue
 
+
 class SNMP(object):
     """SNMP object which interacts with PySNMP to get information via SNMP"""
     def __init__(self, hostname, port, version, community):
@@ -68,7 +69,7 @@ class SNMP(object):
                         UdpTransportTarget((self.hostname, self.port)),
                         ContextData(),
                         *oids
-                       )
+                        )
         # Results are in the first iter of the generator
         errorIndication, errorStatus, errorIndex, varBinds = next(cmdgen)
         # Check for errors and print out results

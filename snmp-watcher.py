@@ -30,53 +30,32 @@ from snmp_watcher.host import Host
 from snmp_watcher.configuration_model import ConfigurationModel
 from snmp_watcher.configuration_host import ConfigurationHost
 
-hostname = 'demo.snmplabs.com'
-port = 161
-version = 'v2c'
-community = 'public'
-#hostname = '192.168.1.1'
-#hostname = '192.168.1.254'
-
-
-oids = ('sysDescr',
-        'sysUpTime',
-        'sysContact',
-        'sysName',
-        'sysLocation',
-       )
-
-#host = Host(hostname, port, version, community)
-#print host.get_values(oids)
-#model = ModelConfiguration('../conf/models/mp402spf.conf')
-#print model.name, model.description, model.oids
-#host_configuration = HostConfiguration('../conf/hosts/host1.conf')
-
 # Load models
 for filename in os.listdir(DIR_MODELS):
-	model_name = filename.split('.conf')[0]
-	snmp_watcher.common.models[model_name] = ConfigurationModel(
-		os.path.join(DIR_MODELS, filename),
-		('Ricoh Levels', 'Ricoh Counters'))
+    model_name = filename.split('.conf')[0]
+    snmp_watcher.common.models[model_name] = ConfigurationModel(
+        os.path.join(DIR_MODELS, filename),
+        ('Ricoh Levels', 'Ricoh Counters'))
 
 for key in snmp_watcher.common.models:
-	model = snmp_watcher.common.models[key]
+    model = snmp_watcher.common.models[key]
 
 parser = argparse.ArgumentParser(description='Read SNMP values')
 parser.add_argument('configuration', type=str, nargs='+',
                     help='configuration file')
 arguments = parser.parse_args()
 for filename in arguments.configuration:
-	assert(os.path.exists(filename))
-	if os.path.isfile(filename):
-		# Load a single configuration file
-		snmp_watcher.common.hosts.append(ConfigurationHost(filename))
-	else:
-		print '%s is not a file, it will be skipped' % filename
+    assert(os.path.exists(filename))
+    if os.path.isfile(filename):
+        # Load a single configuration file
+        snmp_watcher.common.hosts.append(ConfigurationHost(filename))
+    else:
+        print '%s is not a file, it will be skipped' % filename
 
 # Print results
 for host in snmp_watcher.common.hosts:
-	print '%s (%s) (%s)' % (host.name, host.hostname, host.description)
-	values = host.get_values()
-	for key in values.keys():
-		value = values[key]
-		print '  %s = %s' % (value.name, value.value)
+    print '%s (%s) (%s)' % (host.name, host.hostname, host.description)
+    values = host.get_values()
+    for key in values.keys():
+        value = values[key]
+        print '  %s = %s' % (value.name, value.value)

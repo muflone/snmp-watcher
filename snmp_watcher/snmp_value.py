@@ -18,6 +18,7 @@
 #  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
 ##
 
+
 class SNMPValue(object):
     """SNMPValue object containing value name, SNMP oid and its value"""
     def __init__(self, name, snmp_var):
