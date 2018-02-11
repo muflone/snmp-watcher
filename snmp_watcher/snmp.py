@@ -37,14 +37,29 @@ class SNMP(object):
         self.port = port
         self.version = version
         self.community = community
-        print self.hostname, self.port, self.version, self.community
 
     def get_values(self, values):
         """Get SNMP values"""
         results = {}
         oids = []
-        for oid in values:
-            oids.append(ObjectType(ObjectIdentity('SNMPv2-MIB', oid, 0)))
+        for key in values.keys():
+            oid = values[key]
+            # Apply common replacements
+            oid = oid.replace('SNMPv2-SMI::enterprises.', '.1.3.6.1.4.1.', 1)
+            if oid.startswith('mib-2.'):
+                oid = oid.replace('mib-2.', '.1.3.6.1.2.1.', 1)
+            if '::' in oid:
+                mib, oid = oid.split('::', 1)
+                if ':' in oid:
+                    # Use MIB, OID and subtype
+                    oid, subtype = oid.split(':', 1)
+                    oids.append(ObjectType(ObjectIdentity(mib, oid, subtype)))
+                else:
+                    # Use MIB and OID
+                    oids.append(ObjectType(ObjectIdentity(mib, oid)))
+            else:
+                # Just use plain OID
+                oids.append(ObjectType(ObjectIdentity(oid)))
         # Instance a SNMP GET command
         cmdgen = getCmd(SnmpEngine(),
                         CommunityData(self.community),
@@ -68,7 +83,8 @@ class SNMP(object):
                 # Check if the returned variables and the same number of OIDs
                 assert(len(varBinds) == len(oids))
                 # Return data from variables
+                keys = values.keys()
                 for index in xrange(len(varBinds)):
-                    name = values[index]
+                    name = keys[index]
                     results[name] = SNMPValue(name, varBinds[index])
             return results
