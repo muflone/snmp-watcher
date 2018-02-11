@@ -32,7 +32,7 @@ import subprocess
 from itertools import chain
 from glob import glob
 
-from gcentralaccess.constants import (
+from snmp_watcher.constants import (
     APP_NAME, APP_VERSION, APP_DESCRIPTION,
     APP_AUTHOR, APP_AUTHOR_EMAIL, APP_URL)
 
