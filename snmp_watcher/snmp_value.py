@@ -26,6 +26,7 @@ class SNMPValue(object):
         self.value = snmp_var[1].prettyPrint()
 
     def __repr__(self):
+        """Show the instance values"""
         return '<%s object name: %s (%s) = Value: %s>' % (
             self.__class__.__name__,
             self.name,

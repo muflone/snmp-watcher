@@ -39,6 +39,7 @@ class ConfigurationModel(ConfigurationAbstract):
         for group in [str.strip() for str in
                       self.config.get(SECTION_MODEL,
                                       OPTION_GROUPS).split(',')]:
+            # Include only the selected groups
             if '*' in include_groups or group in include_groups:
                 # Load OIDs
                 for option in self.config.options(group):
