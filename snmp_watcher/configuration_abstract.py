@@ -20,22 +20,11 @@
 
 import ConfigParser
 
-SECTION_MODEL = 'Model'
-SECTION_OIDS = 'OIDS'
 
-OPTION_NAME = 'name'
-OPTION_DESCRIPTION = 'description'
-
-class ModelConfiguration(object):
-    """ModelConfiguration object to load model configuration from file"""
+class ConfigurationAbstract(object):
+    """ConfigurationAbstract object to load configuration from file"""
     def __init__(self, filename):
-        config = ConfigParser.RawConfigParser()
+        self.config = ConfigParser.RawConfigParser()
+        self.config.optionxform = str
         # Read data from the configuration file
-        config.read(filename)
-        # Load generic model data
-        self.name = config.get(SECTION_MODEL, OPTION_NAME)
-        self.description = config.get(SECTION_MODEL, OPTION_DESCRIPTION)
-        # Load OIDs from the OIDS section
-        self.oids = {}
-        for option in config.options(SECTION_OIDS):
-            self.oids[option] = config.get(SECTION_OIDS, option)
+        self.config.read(filename)
