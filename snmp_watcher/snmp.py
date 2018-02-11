@@ -18,6 +18,8 @@
 #  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
 ##
 
+from collections import OrderedDict
+
 from pysnmp.hlapi import (
     getCmd,
     SnmpEngine,
@@ -40,7 +42,7 @@ class SNMP(object):
 
     def get_values(self, values):
         """Get SNMP values"""
-        results = {}
+        results = OrderedDict()
         oids = []
         for key in values.keys():
             oid = values[key]
