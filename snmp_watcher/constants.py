@@ -22,4 +22,3 @@ import os.path
 
 DIR_CONFIGURATIONS = '../conf'
 DIR_MODELS = os.path.join(DIR_CONFIGURATIONS, 'models')
-DIR_HOSTS = os.path.join(DIR_CONFIGURATIONS, 'hosts')
