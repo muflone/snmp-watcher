@@ -18,7 +18,8 @@
 #  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
 ##
 
-from snmp import SNMP
+from .snmp import SNMP
+
 
 class Host(object):
     """

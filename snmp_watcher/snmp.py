@@ -28,7 +28,7 @@ from pysnmp.hlapi import (
     ObjectType
 )
 
-from snmp_value import SNMPValue
+from .snmp_value import SNMPValue
 
 class SNMP(object):
     """SNMP object which interacts with PySNMP to get information via SNMP"""
