@@ -20,5 +20,15 @@
 
 import os.path
 
+# Application constants
+APP_NAME = 'SNMP Watcher'
+APP_VERSION = '0.1.0'
+APP_DESCRIPTION = 'Watch devices through SNMP'
+APP_ID = 'snmp-watcher.muflone.com'
+APP_URL = 'http://www.muflone.com/snmp-watcher/'
+APP_AUTHOR = 'Fabio Castelli'
+APP_AUTHOR_EMAIL = 'muflone@vbsimple.net'
+APP_COPYRIGHT = 'Copyright 2018 %s' % APP_AUTHOR
+
 DIR_CONFIGURATIONS = '../conf'
 DIR_MODELS = os.path.join(DIR_CONFIGURATIONS, 'models')
