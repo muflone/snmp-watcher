@@ -17,7 +17,7 @@ System Requirements
 * Python 2.x (developed and tested for Python 2.7.5)
 * XDG library for Python 2.x
 * Distutils library for Python 2.x (usually shipped with Python distribution)
-* PySNMP
+* PySNMP (<http://snmplabs.com/pysnmp/>)
 
 Installation
 ------------
