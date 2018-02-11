@@ -15,6 +15,6 @@ install:
 script:
   - python -m compileall .
   - pep8 . || true
-  - pychecker --no-shadow snmp-watcher.py
+  - pychecker snmp_watcher
   - python setup.py install --optimize=1 --root=build
   - ls -laR build
