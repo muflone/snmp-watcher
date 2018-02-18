@@ -74,14 +74,13 @@ class SNMP(object):
         errorIndication, errorStatus, errorIndex, varBinds = next(cmdgen)
         # Check for errors and print out results
         if errorIndication:
-            print(errorIndication)
-            return None
+            return str(errorIndication)
         else:
             if errorStatus:
-                print('%s at %s' % (
+                return '%s at %s' % (
                     errorStatus.prettyPrint(),
                     errorIndex and varBinds[int(errorIndex)-1] or '?'
-                ))
+                )
             else:
                 # Check if the returned variables and the same number of OIDs
                 assert(len(varBinds) == len(oids))

@@ -65,6 +65,9 @@ for filename in arguments.configuration:
 for host in snmp_watcher.common.hosts:
     print '%s (%s) (%s)' % (host.name, host.hostname, host.description)
     values = host.get_values()
-    for key in values.keys():
-        value = values[key]
-        print '  %s = %s' % (value.name, value.value)
+    if not isinstance(values, str):
+        for key in values.keys():
+            value = values[key]
+            print '  %s = %s' % (value.name, value.value)
+    else:
+        print '  Error: %s' % values
