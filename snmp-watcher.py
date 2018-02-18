@@ -41,7 +41,7 @@ parser.add_argument('configuration', type=str, action='store', nargs='+',
 arguments = parser.parse_args()
 # If no groups were specified list all services groups
 if not arguments.groups:
-	arguments.groups = ['*']
+    arguments.groups = ['*']
 
 # Load models
 for filename in os.listdir(arguments.models or DIR_MODELS):
