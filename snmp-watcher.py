@@ -34,6 +34,8 @@ from snmp_watcher.configuration_host import ConfigurationHost
 parser = argparse.ArgumentParser(description='Read SNMP values')
 parser.add_argument('--group', dest='groups', type=str, action='append',
                     help='values group to monitor')
+parser.add_argument('--models', dest='models', type=str, action='store',
+                    help='path where to search for models')
 parser.add_argument('configuration', type=str, action='store', nargs='+',
                     help='configuration file')
 arguments = parser.parse_args()
@@ -42,7 +44,7 @@ if not arguments.groups:
 	arguments.groups = ['*']
 
 # Load models
-for filename in os.listdir(DIR_MODELS):
+for filename in os.listdir(arguments.models or DIR_MODELS):
     model_name = filename.split('.conf')[0]
     snmp_watcher.common.models[model_name] = ConfigurationModel(
         os.path.join(DIR_MODELS, filename),
