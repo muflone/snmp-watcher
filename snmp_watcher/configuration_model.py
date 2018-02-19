@@ -26,7 +26,6 @@ SECTION_GENERAL = 'General'
 
 OPTION_NAME = 'name'
 OPTION_DESCRIPTION = 'description'
-OPTION_GROUPS = 'groups'
 
 
 class ConfigurationModel(ConfigurationAbstract):
@@ -36,9 +35,9 @@ class ConfigurationModel(ConfigurationAbstract):
         # Load generic model data
         self.description = self.config.get(SECTION_GENERAL, OPTION_DESCRIPTION)
         self.oids = OrderedDict()
-        for group in [str.strip() for str in
-                      self.config.get(SECTION_GENERAL,
-                                      OPTION_GROUPS).split(',')]:
+        # Cycle all the available sections
+        for group in [section.strip() for section in self.config.sections()
+                      if section not in (SECTION_GENERAL, )]:
             # Include only the selected groups
             if '*' in include_groups or group in include_groups:
                 # Load OIDs
