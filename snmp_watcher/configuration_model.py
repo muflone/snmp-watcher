@@ -22,7 +22,7 @@ from collections import OrderedDict
 
 from .configuration_abstract import ConfigurationAbstract
 
-SECTION_MODEL = 'Model'
+SECTION_GENERAL = 'General'
 
 OPTION_NAME = 'name'
 OPTION_DESCRIPTION = 'description'
@@ -34,10 +34,10 @@ class ConfigurationModel(ConfigurationAbstract):
     def __init__(self, filename, include_groups):
         super(self.__class__, self).__init__(filename)
         # Load generic model data
-        self.description = self.config.get(SECTION_MODEL, OPTION_DESCRIPTION)
+        self.description = self.config.get(SECTION_GENERAL, OPTION_DESCRIPTION)
         self.oids = OrderedDict()
         for group in [str.strip() for str in
-                      self.config.get(SECTION_MODEL,
+                      self.config.get(SECTION_GENERAL,
                                       OPTION_GROUPS).split(',')]:
             # Include only the selected groups
             if '*' in include_groups or group in include_groups:
