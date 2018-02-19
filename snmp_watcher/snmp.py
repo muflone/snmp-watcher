@@ -49,6 +49,7 @@ class SNMP(object):
             oid = values[key]
             # Apply common replacements
             oid = oid.replace('SNMPv2-SMI::enterprises.', '.1.3.6.1.4.1.', 1)
+            oid = oid.replace('IP-MIB::ip.', '.1.3.6.1.2.1.4.', 1)
             if oid.startswith('mib-2.'):
                 oid = oid.replace('mib-2.', '.1.3.6.1.2.1.', 1)
             if '::' in oid:
