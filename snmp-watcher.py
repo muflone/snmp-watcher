@@ -32,9 +32,9 @@ from snmp_watcher.configuration_host import ConfigurationHost
 
 # Parse command line arguments
 parser = argparse.ArgumentParser(description='Read SNMP values')
-parser.add_argument('--group', dest='groups', type=str, action='append',
+parser.add_argument('-g', '--group', dest='groups', type=str, action='append',
                     help='values group to monitor')
-parser.add_argument('--models', dest='models', type=str, action='store',
+parser.add_argument('-m', '--models', dest='models', type=str, action='store',
                     help='path where to search for models')
 parser.add_argument('configuration', type=str, action='store', nargs='+',
                     help='configuration file')
