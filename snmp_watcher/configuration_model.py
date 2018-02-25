@@ -30,9 +30,11 @@ OPTION_DESCRIPTION = 'description'
 
 class ConfigurationModel(ConfigurationAbstract):
     """ConfigurationModel object to load model configuration from file"""
-    def __init__(self, filename, include_groups):
+    def __init__(self, name, filename, include_groups):
         super(self.__class__, self).__init__(filename)
         # Load generic model data
+        self.name = name
+        self.filename = filename
         self.description = self.config.get(SECTION_GENERAL, OPTION_DESCRIPTION)
         self.oids = OrderedDict()
         # Cycle all the available sections

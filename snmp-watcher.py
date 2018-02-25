@@ -47,8 +47,9 @@ if not arguments.groups:
 for filename in os.listdir(arguments.models or DIR_MODELS):
     model_name = filename.split('.conf')[0]
     snmp_watcher.common.models[model_name] = ConfigurationModel(
-        os.path.join(DIR_MODELS, filename),
-        arguments.groups)
+        name=model_name,
+        filename=os.path.join(DIR_MODELS, filename),
+        include_groups=arguments.groups)
 
 for key in snmp_watcher.common.models:
     model = snmp_watcher.common.models[key]
