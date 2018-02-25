@@ -63,7 +63,7 @@ for filename in arguments.configuration:
 
 # Print results
 for host in snmp_watcher.common.hosts:
-    print '%s (%s) (%s)' % (host.name, host.hostname, host.description)
+    print 'Host %s (%s) (%s)' % (host.name, host.hostname, host.description)
     try:
         values = host.get_values()
         for key in values.keys():
