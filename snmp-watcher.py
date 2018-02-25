@@ -26,7 +26,6 @@ import argparse
 
 import snmp_watcher.common
 from snmp_watcher.constants import DIR_MODELS
-from snmp_watcher.host import Host
 from snmp_watcher.configuration_model import ConfigurationModel
 from snmp_watcher.configuration_host import ConfigurationHost
 

@@ -35,11 +35,8 @@ from .snmp_value import SNMPValue
 
 class SNMP(object):
     """SNMP object which interacts with PySNMP to get information via SNMP"""
-    def __init__(self, hostname, port, version, community):
-        self.hostname = hostname
-        self.port = port
-        self.version = version
-        self.community = community
+    def __init__(self, host):
+        self.host = host
 
     def get_values(self, values):
         """Get SNMP values"""
@@ -66,8 +63,9 @@ class SNMP(object):
                 oids.append(ObjectType(ObjectIdentity(oid)))
         # Instance a SNMP GET command
         cmdgen = getCmd(SnmpEngine(),
-                        CommunityData(self.community),
-                        UdpTransportTarget((self.hostname, self.port)),
+                        CommunityData(self.host.community),
+                        UdpTransportTarget((self.host.hostname,
+                                            self.host.port)),
                         ContextData(),
                         *oids
                         )

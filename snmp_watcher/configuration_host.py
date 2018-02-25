@@ -20,7 +20,7 @@
 
 import snmp_watcher.common
 from .configuration_abstract import ConfigurationAbstract
-from .host import Host
+from .snmp import SNMP
 
 
 SECTION_HOST = 'Host'
@@ -45,13 +45,10 @@ class ConfigurationHost(ConfigurationAbstract):
         self.port = self.config.getint(SECTION_HOST, OPTION_PORT)
         self.version = self.config.get(SECTION_HOST, OPTION_VERSION)
         self.community = self.config.get(SECTION_HOST, OPTION_COMMUNITY)
-        self.model = self.config.get(SECTION_HOST, OPTION_MODEL)
-        self.host = Host(hostname=self.hostname,
-                         port=self.port,
-                         version=self.version,
-                         community=self.community)
-        self.model = snmp_watcher.common.models[self.model]
+        model_name = self.config.get(SECTION_HOST, OPTION_MODEL)
+        self.model = snmp_watcher.common.models[model_name]
 
     def get_values(self):
         """Get the values for the model OIDs via SNMP"""
-        return self.host.get_values(self.model.oids)
+        snmp = SNMP(host=self)
+        return snmp.get_values(self.model.oids)
