@@ -19,6 +19,8 @@
 ##
 
 from collections import OrderedDict
+from socket import gethostbyname
+from datetime import datetime
 
 from pysnmp.hlapi import (
     getCmd,
@@ -42,6 +44,29 @@ class SNMP(object):
         """Get SNMP values"""
         results = OrderedDict()
         oids = []
+        # Extract special values
+        values = OrderedDict(values)
+        special_values = {
+            '{name}': self.host.name,
+            '{description}': self.host.description,
+            '{model}': self.host.model.name,
+            '{hostname}': self.host.hostname,
+            '{address}': gethostbyname(self.host.hostname),
+            '{port}': self.host.port,
+            '{version}': self.host.version,
+            '{community}': self.host.community,
+            '{date}': datetime.now().strftime('%Y/%m/%d'),
+            '{time}': datetime.now().strftime('%H:%M:%S'),
+            '{now}': datetime.now().strftime('%Y/%m/%d %H:%M:%S'),
+        }
+        for key in values.keys():
+            value = values[key]
+            if value in special_values.keys():
+                # Add special value to the results
+                results[key] = SNMPValue(key, special_values[value])
+                # Removes special values from OIDs list
+                values.pop(key)
+        # Scan SNMP value
         for key in values.keys():
             oid = values[key]
             # Apply common replacements
