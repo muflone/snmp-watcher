@@ -18,13 +18,19 @@
 #  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
 ##
 
+import pysnmp.smi.rfc1902
+
 
 class SNMPValue(object):
     """SNMPValue object containing value name, SNMP oid and its value"""
     def __init__(self, name, snmp_var):
         self.name = name
-        self.oid = snmp_var[0].prettyPrint()
-        self.value = snmp_var[1].prettyPrint()
+        if isinstance(snmp_var, pysnmp.smi.rfc1902.ObjectType):
+            self.oid = snmp_var[0].prettyPrint()
+            self.value = snmp_var[1].prettyPrint()
+        else:
+            self.oid = None
+            self.value = snmp_var
 
     def __repr__(self):
         """Show the instance values"""
