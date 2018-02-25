@@ -64,10 +64,10 @@ for filename in arguments.configuration:
 # Print results
 for host in snmp_watcher.common.hosts:
     print '%s (%s) (%s)' % (host.name, host.hostname, host.description)
-    values = host.get_values()
-    if not isinstance(values, str):
+    try:
+        values = host.get_values()
         for key in values.keys():
             value = values[key]
             print '  %s = %s' % (value.name, value.value)
-    else:
-        print '  Error: %s' % values
+    except Exception as error:
+        print '  Error: %s' % error
