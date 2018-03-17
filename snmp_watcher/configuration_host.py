@@ -58,6 +58,16 @@ class ConfigurationHost(ConfigurationObject):
         model_name = self.get(SECTION_HOST, OPTION_MODEL)
         self.model = snmp_watcher.common.models[model_name]
 
+    def set_for_autodetection(self, destination, port, version, community):
+        """Set data for host autodetection"""
+        self.name = destination
+        self.description = 'autodetection for %s' % destination
+        self.hostname = destination
+        self.port = port
+        self.version = version
+        self.community = community
+        self.model = None
+
     def set_model(self, model_name):
         """Set model"""
         self.model = snmp_watcher.common.models[model_name]

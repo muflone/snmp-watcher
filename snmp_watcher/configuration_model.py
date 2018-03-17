@@ -26,6 +26,7 @@ SECTION_GENERAL = 'General'
 
 OPTION_NAME = 'name'
 OPTION_DESCRIPTION = 'description'
+OPTION_AUTODETECT = 'autodetect'
 
 
 class ConfigurationModel(ConfigurationObject):
@@ -38,6 +39,14 @@ class ConfigurationModel(ConfigurationObject):
         self.filename = filename
         self.description = self.config.get(SECTION_GENERAL, OPTION_DESCRIPTION)
         self.oids = OrderedDict()
+        # OID for model Auto detection
+        self.autodetect_oid = None
+        self.autodetect_value = None
+        if self.config.has_option(SECTION_GENERAL, OPTION_AUTODETECT):
+            value = self.config.get(SECTION_GENERAL, OPTION_AUTODETECT)
+            if '=' in value:
+                self.autodetect_oid, self.autodetect_value = [
+                    v.strip() for v in value.split('=', 1)]
         # Cycle all the available sections
         for group in [section.strip() for section in self.config.sections()
                       if section not in (SECTION_GENERAL, )]:
