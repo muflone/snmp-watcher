@@ -95,10 +95,11 @@ for item in arguments.configuration:
     if arguments.autodetect:
         # Autodetection mode
         host = ConfigurationHost()
-        host.set_for_autodetection(destination=item,
-                                   port=arguments.port,
-                                   version=arguments.version,
-                                   community=arguments.community)
+        host.set_options(destination=item,
+                         description='autodetection for %s' % item,
+                         port=arguments.port,
+                         version=arguments.version,
+                         community=arguments.community)
         try:
             values = host.get_values_from_oids(
                 dict((key, autodetections[key]['oid'])
