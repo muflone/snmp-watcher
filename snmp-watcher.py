@@ -73,6 +73,11 @@ parser_group.add_argument('-n', '--no-scan',
                           dest='no_scan',
                           action='store_true',
                           help='find model only, don\'t read values')
+parser_group.add_argument('-M', '--model',
+                          type=str,
+                          dest='model',
+                          action='store',
+                          help='use the specified model')
 arguments = parser.parse_args()
 # If no groups were specified list all services groups
 if not arguments.groups:
@@ -92,7 +97,18 @@ for filename in os.listdir(arguments.models or DIR_MODELS):
     snmp_watcher.common.models[model_name] = model
 
 for item in arguments.configuration:
-    if arguments.autodetect:
+    if arguments.model:
+        # Use specific model mode
+        host = ConfigurationHost()
+        host.set_options(destination=item,
+                         description='manual model selection for %s' % item,
+                         port=arguments.port,
+                         version=arguments.version,
+                         community=arguments.community)
+        host.set_model(arguments.model)
+        # Add host to the list of hosts to check
+        snmp_watcher.common.hosts.append(host)
+    elif arguments.autodetect:
         # Autodetection mode
         host = ConfigurationHost()
         host.set_options(destination=item,
