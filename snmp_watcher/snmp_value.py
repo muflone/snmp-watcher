@@ -27,15 +27,15 @@ class SNMPValue(object):
     
     The name will contain a pure clean OID as obtained from a SNMPGET response,
     while the meta_oid will contain the original OID before any substitution"""
-    def __init__(self, meta_oid, name, snmp_var):
+    def __init__(self, meta_oid, name, value):
         self.name = name
         self.meta_oid = meta_oid
-        if isinstance(snmp_var, pysnmp.smi.rfc1902.ObjectType):
-            self.oid = snmp_var[0].prettyPrint()
-            self.value = snmp_var[1].prettyPrint()
+        if isinstance(value, pysnmp.smi.rfc1902.ObjectType):
+            self.oid = value[0].prettyPrint()
+            self.value = value[1].prettyPrint()
         else:
             self.oid = None
-            self.value = snmp_var
+            self.value = value
 
     def __repr__(self):
         """Show the instance values"""
