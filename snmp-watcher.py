@@ -32,23 +32,32 @@ from snmp_watcher.configuration_host import ConfigurationHost
 
 # Parse command line arguments
 parser = argparse.ArgumentParser(description='Read SNMP values')
-parser.add_argument('-g', '--group', dest='groups', type=str, action='append',
+parser.add_argument('-g', '--group',
+                    type=str,
+                    dest='groups',
+                    action='append',
                     help='values group to monitor')
-parser.add_argument('-m', '--models', dest='models', type=str, action='store',
+parser.add_argument('-m', '--models',
+                    type=str,
+                    dest='models',
+                    action='store',
                     help='path where to search for models')
-parser.add_argument('configuration', type=str, action='store', nargs='+',
-                    help='configuration file')
-parser.add_argument('-a', '--autodetect', action='store_true',
+parser.add_argument('-a', '--autodetect',
+                    dest='autodetect',
+                    action='store_true',
                     help='autodetection mode')
+parser.add_argument('configuration',
+                    type=str,
+                    action='store',
+                    nargs='+',
+                    help='configuration file')
 arguments = parser.parse_args()
 # If no groups were specified list all services groups
 if not arguments.groups:
     arguments.groups = ['*']
 
 # Load models
-autodetections = {'NOT FOUND': {'oid': 'SNMPv2-MIB::sysDescr:0',
-                                'value': 'NOT FOUND'}
-                 }
+autodetections = {}
 for filename in os.listdir(arguments.models or DIR_MODELS):
     model_name = filename.split('.conf')[0]
     model = ConfigurationModel(name=model_name,
@@ -60,32 +69,17 @@ for filename in os.listdir(arguments.models or DIR_MODELS):
                                      }
     snmp_watcher.common.models[model_name] = model
 
-for key in snmp_watcher.common.models:
-    model = snmp_watcher.common.models[key]
-
-for filename in arguments.configuration:
-    if not arguments.autodetect:
-        # Usage with configuration files
-        assert os.path.exists(filename)
-        if os.path.isfile(filename):
-            # Load a single configuration file
-            host = ConfigurationHost()
-            host.read_from_filename(filename)
-            host.load()
-            snmp_watcher.common.hosts.append(host)
-        else:
-            print '%s is not a file, it will be skipped' % filename
-    else:
+for item in arguments.configuration:
+    if arguments.autodetect:
         # Autodetection mode
         host = ConfigurationHost()
-        host.set_for_autodetection(filename, 161, 'v1', 'public')
+        host.set_for_autodetection(item, 161, 'v1', 'public')
         try:
             values = host.get_values_from_oids(
                 dict((key, autodetections[key]['oid'])
                 for key in autodetections.keys()))
             # Search for a reply with the same OID and value
             model_found = None
-            # print values
             for key in values:
                 # Skip "No Such Object currently exists at this OID" replies
                 if key != 'NOT FOUND' and values[key].is_valid():
@@ -94,6 +88,7 @@ for filename in arguments.configuration:
                     # Check for the same (meta) OID and values
                     if (requested_oid == values[key].meta_oid and
                             requested_value == values[key].value):
+                        # Model was found
                         model_found = key
                         break
                 # No further searches are needed
@@ -101,12 +96,22 @@ for filename in arguments.configuration:
                     break
             assert model_found, 'model not found'
             if model_found:
-                print 'Host %s, model found: %s' % (host.name, model_found)
                 host.set_model(model_found)
                 snmp_watcher.common.hosts.append(host)
         except Exception as error:
             print 'Host %s' % (host.name, )
             print '  Error: %s' % error
+    else:
+        # Usage with configuration files
+        assert os.path.exists(item)
+        if os.path.isfile(item):
+            # Load a single configuration file
+            host = ConfigurationHost()
+            host.read_from_filename(item)
+            host.load()
+            snmp_watcher.common.hosts.append(host)
+        else:
+            print '%s is not a file, it will be skipped' % item
 
 
 # Print results

@@ -87,10 +87,11 @@ class SNMP(object):
                 # Just use plain OID
                 oids.append(ObjectType(ObjectIdentity(oid)))
         # Instance a SNMP GET command
-        snmp_version = {'v1': 0, 'v2c': 1}[self.host.version]
         cmdgen = getCmd(SnmpEngine(),
                         CommunityData(self.host.community,
-                                      mpModel=snmp_version),
+                                      mpModel={'v1': 0,
+                                               'v2c': 1
+                                              }[self.host.version]),
                         UdpTransportTarget((self.host.hostname,
                                             self.host.port)),
                         ContextData()
