@@ -51,6 +51,24 @@ parser.add_argument('configuration',
                     action='store',
                     nargs='+',
                     help='configuration file')
+# Add arguments for autodetection mode
+parser_group = parser.add_argument_group('Autodetection options')
+parser_group.add_argument('-v', '--version',
+                          type=str,
+                          action='store',
+                          choices=('v1', 'v2c'),
+                          default='v1',
+                          help='SNMP version to use')
+parser_group.add_argument('-c', '--community',
+                          type=str,
+                          action='store',
+                          default='public',
+                          help='community string to use')
+parser_group.add_argument('-p', '--port',
+                          type=int,
+                          action='store',
+                          default='161',
+                          help='UDP port number for SNMP request')
 arguments = parser.parse_args()
 # If no groups were specified list all services groups
 if not arguments.groups:
@@ -73,7 +91,10 @@ for item in arguments.configuration:
     if arguments.autodetect:
         # Autodetection mode
         host = ConfigurationHost()
-        host.set_for_autodetection(item, 161, 'v1', 'public')
+        host.set_for_autodetection(destination=item,
+                                   port=arguments.port,
+                                   version=arguments.version,
+                                   community=arguments.community)
         try:
             values = host.get_values_from_oids(
                 dict((key, autodetections[key]['oid'])
