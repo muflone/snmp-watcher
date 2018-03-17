@@ -54,7 +54,7 @@ for key in snmp_watcher.common.models:
     model = snmp_watcher.common.models[key]
 
 for filename in arguments.configuration:
-    assert(os.path.exists(filename))
+    assert os.path.exists(filename)
     if os.path.isfile(filename):
         # Load a single configuration file
         host = ConfigurationHost()
