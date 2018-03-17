@@ -60,5 +60,9 @@ class ConfigurationHost(ConfigurationObject):
 
     def get_values(self):
         """Get the values for the model OIDs via SNMP"""
+        return self.get_values_from_oids(self.model.oids)
+
+    def get_values_from_oids(self, oids):
+        """Get the requested values from OIDs list"""
         snmp = SNMP(host=self)
-        return snmp.get_values(self.model.oids)
+        return snmp.get_values(oids)
