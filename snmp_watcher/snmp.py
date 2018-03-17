@@ -117,6 +117,6 @@ class SNMP(object):
                 # Get data from variable
                 keys = values.keys()
                 name = keys[index]
-                results[name] = SNMPValue(values[name], varBinds[0])
+                results[name] = SNMPValue(values[name], name, varBinds[0])
         # Return the gathered results
         return results
