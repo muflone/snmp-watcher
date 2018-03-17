@@ -58,6 +58,10 @@ class ConfigurationHost(ConfigurationObject):
         model_name = self.get(SECTION_HOST, OPTION_MODEL)
         self.model = snmp_watcher.common.models[model_name]
 
+    def set_model(self, model_name):
+        """Set model"""
+        self.model = snmp_watcher.common.models[model_name]
+
     def get_values(self):
         """Get the values for the model OIDs via SNMP"""
         return self.get_values_from_oids(self.model.oids)
