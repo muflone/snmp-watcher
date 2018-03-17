@@ -69,6 +69,10 @@ parser_group.add_argument('-p', '--port',
                           action='store',
                           default='161',
                           help='UDP port number for SNMP request')
+parser_group.add_argument('-n', '--no-scan',
+                          dest='no_scan',
+                          action='store_true',
+                          help='find model only, don\'t read values')
 arguments = parser.parse_args()
 # If no groups were specified list all services groups
 if not arguments.groups:
@@ -118,7 +122,12 @@ for item in arguments.configuration:
             assert model_found, 'model not found'
             if model_found:
                 host.set_model(model_found)
-                snmp_watcher.common.hosts.append(host)
+                if arguments.no_scan:
+                    # Show only the detected model
+                    print 'Host %s, model detected: %s' % (host.name, model_found)
+                else:
+                    # Add host to the list of hosts to check
+                    snmp_watcher.common.hosts.append(host)
         except Exception as error:
             print 'Host %s' % (host.name, )
             print '  Error: %s' % error
