@@ -19,7 +19,7 @@
 ##
 
 import snmp_watcher.common
-from .configuration_abstract import ConfigurationAbstract
+from .configuration_object import ConfigurationObject
 from .snmp import SNMP
 
 
@@ -34,18 +34,28 @@ OPTION_COMMUNITY = 'community'
 OPTION_MODEL = 'model'
 
 
-class ConfigurationHost(ConfigurationAbstract):
-    """ConfigurationHost object to load host configuration from file"""
-    def __init__(self, filename):
-        super(self.__class__, self).__init__(filename)
-        # Load generic model data
-        self.name = self.config.get(SECTION_HOST, OPTION_NAME)
-        self.description = self.config.get(SECTION_HOST, OPTION_DESCRIPTION)
-        self.hostname = self.config.get(SECTION_HOST, OPTION_HOSTNAME)
-        self.port = self.config.getint(SECTION_HOST, OPTION_PORT)
-        self.version = self.config.get(SECTION_HOST, OPTION_VERSION)
-        self.community = self.config.get(SECTION_HOST, OPTION_COMMUNITY)
-        model_name = self.config.get(SECTION_HOST, OPTION_MODEL)
+class ConfigurationHost(ConfigurationObject):
+    """ConfigurationHost object to load host from a configuration object"""
+    def __init__(self):
+        """Initialize object"""
+        super(self.__class__, self).__init__()
+        self.name = None
+        self.description = None
+        self.hostname = None
+        self.port = None
+        self.version = None
+        self.community = None
+        self.model = None
+
+    def load(self):
+        """Load data from configuration"""
+        self.name = self.get(SECTION_HOST, OPTION_NAME)
+        self.description = self.get(SECTION_HOST, OPTION_DESCRIPTION)
+        self.hostname = self.get(SECTION_HOST, OPTION_HOSTNAME)
+        self.port = self.get_int(SECTION_HOST, OPTION_PORT)
+        self.version = self.get(SECTION_HOST, OPTION_VERSION)
+        self.community = self.get(SECTION_HOST, OPTION_COMMUNITY)
+        model_name = self.get(SECTION_HOST, OPTION_MODEL)
         self.model = snmp_watcher.common.models[model_name]
 
     def get_values(self):

@@ -20,7 +20,7 @@
 
 from collections import OrderedDict
 
-from .configuration_abstract import ConfigurationAbstract
+from .configuration_object import ConfigurationObject
 
 SECTION_GENERAL = 'General'
 
@@ -28,10 +28,11 @@ OPTION_NAME = 'name'
 OPTION_DESCRIPTION = 'description'
 
 
-class ConfigurationModel(ConfigurationAbstract):
+class ConfigurationModel(ConfigurationObject):
     """ConfigurationModel object to load model configuration from file"""
     def __init__(self, name, filename, include_groups):
-        super(self.__class__, self).__init__(filename)
+        super(self.__class__, self).__init__()
+        self.read_from_filename(filename)
         # Load generic model data
         self.name = name
         self.filename = filename

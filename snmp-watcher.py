@@ -57,7 +57,10 @@ for filename in arguments.configuration:
     assert(os.path.exists(filename))
     if os.path.isfile(filename):
         # Load a single configuration file
-        snmp_watcher.common.hosts.append(ConfigurationHost(filename))
+        host = ConfigurationHost()
+        host.read_from_filename(filename)
+        host.load()
+        snmp_watcher.common.hosts.append(host)
     else:
         print '%s is not a file, it will be skipped' % filename
 
