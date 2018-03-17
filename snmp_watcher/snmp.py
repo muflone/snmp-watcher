@@ -49,7 +49,7 @@ class SNMP(object):
         special_values = {
             '{name}': self.host.name,
             '{description}': self.host.description,
-            '{model}': self.host.model.name,
+            '{model}': self.host.model.name if self.host.model else 'None',
             '{hostname}': self.host.hostname,
             '{address}': gethostbyname(self.host.hostname),
             '{port}': self.host.port,
@@ -87,30 +87,36 @@ class SNMP(object):
                 # Just use plain OID
                 oids.append(ObjectType(ObjectIdentity(oid)))
         # Instance a SNMP GET command
+        snmp_version = {'v1': 0, 'v2c': 1}[self.host.version]
         cmdgen = getCmd(SnmpEngine(),
-                        CommunityData(self.host.community),
+                        CommunityData(self.host.community,
+                                      mpModel=snmp_version),
                         UdpTransportTarget((self.host.hostname,
                                             self.host.port)),
-                        ContextData(),
-                        *oids
+                        ContextData()
                         )
-        # Results are in the first iter of the generator
-        errorIndication, errorStatus, errorIndex, varBinds = next(cmdgen)
-        # Check for errors and print out results
-        if errorIndication:
-            raise Exception(errorIndication)
-        else:
-            if errorStatus:
-                raise Exception('%s at %s' % (
-                    errorStatus.prettyPrint(),
+        next(cmdgen)
+        # Get each value
+        keys = values.keys()
+        for index in xrange(len(keys)):
+            name = keys[index]
+            # Request a single value from the cmdgen object
+            errorIndication, errorStatus, errorIndex, varBinds = cmdgen.send(
+                (oids[index],))
+            # Check for errors
+            if errorIndication:
+                raise Exception(errorIndication)
+            # If v1 version was requested we can safely ignore errorStatus = 2
+            # for "No Such Object currently exists at this OID" errors
+            if errorStatus and (self.host.version == 'v1' and errorStatus != 2):
+                raise Exception('%d at %s' % (
+                    errorStatus,
                     errorIndex and varBinds[int(errorIndex)-1] or '?'
                 ))
             else:
-                # Check if the returned variables and the same number of OIDs
-                assert(len(varBinds) == len(oids))
-                # Return data from variables
+                # Get data from variable
                 keys = values.keys()
-                for index in xrange(len(varBinds)):
-                    name = keys[index]
-                    results[name] = SNMPValue(name, varBinds[index])
-            return results
+                name = keys[index]
+                results[name] = SNMPValue(values[name], name, varBinds[0])
+        # Return the gathered results
+        return results
