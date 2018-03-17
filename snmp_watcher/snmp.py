@@ -63,7 +63,7 @@ class SNMP(object):
             value = values[key]
             if value in special_values.keys():
                 # Add special value to the results
-                results[key] = SNMPValue(key, special_values[value])
+                results[key] = SNMPValue(key, key, special_values[value])
                 # Removes special values from OIDs list
                 values.pop(key)
         # Scan SNMP value
@@ -117,6 +117,6 @@ class SNMP(object):
                 # Get data from variable
                 keys = values.keys()
                 name = keys[index]
-                results[name] = SNMPValue(values[name], name, varBinds[0])
+                results[name] = SNMPValue(values[name], varBinds[0])
         # Return the gathered results
         return results
