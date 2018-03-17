@@ -79,30 +79,34 @@ for filename in arguments.configuration:
         # Autodetection mode
         host = ConfigurationHost()
         host.set_for_autodetection(filename, 161, 'v1', 'public')
-        values = host.get_values_from_oids(
-            dict((key, autodetections[key]['oid'])
-            for key in autodetections.keys()))
-        # Search for a reply with the same OID and value
-        model_found = None
-        # print values
-        for key in values:
-            # Skip "No Such Object currently exists at this OID" replies
-            if key != 'NOT FOUND' and values[key].is_valid():
-                requested_oid = autodetections[key]['oid']
-                requested_value = autodetections[key]['value']
-                # Check for the same (meta) OID and values
-                if (requested_oid == values[key].meta_oid and
-                        requested_value == values[key].value):
-                    model_found = key
+        try:
+            values = host.get_values_from_oids(
+                dict((key, autodetections[key]['oid'])
+                for key in autodetections.keys()))
+            # Search for a reply with the same OID and value
+            model_found = None
+            # print values
+            for key in values:
+                # Skip "No Such Object currently exists at this OID" replies
+                if key != 'NOT FOUND' and values[key].is_valid():
+                    requested_oid = autodetections[key]['oid']
+                    requested_value = autodetections[key]['value']
+                    # Check for the same (meta) OID and values
+                    if (requested_oid == values[key].meta_oid and
+                            requested_value == values[key].value):
+                        model_found = key
+                        break
+                # No further searches are needed
+                if model_found:
                     break
-            # No further searches are needed
+            assert model_found, 'model not found'
             if model_found:
-                break
-        assert model_found, 'model not found'
-        if model_found:
-            print 'model found:', model_found
-            host.set_model(model_found)
-            snmp_watcher.common.hosts.append(host)
+                print 'Host %s, model found: %s' % (host.name, model_found)
+                host.set_model(model_found)
+                snmp_watcher.common.hosts.append(host)
+        except Exception as error:
+            print 'Host %s' % (host.name, )
+            print '  Error: %s' % error
 
 
 # Print results
