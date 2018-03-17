@@ -19,6 +19,7 @@
 ##
 
 import pysnmp.smi.rfc1902
+from pysnmp.proto.rfc1905 import noSuchObject
 
 
 class SNMPValue(object):
@@ -43,3 +44,7 @@ class SNMPValue(object):
             self.name,
             self.oid,
             self.value)
+
+    def is_valid(self):
+        """Return True if the value is not a noSuchObject error"""
+        return self.value != noSuchObject.prettyPrint()
