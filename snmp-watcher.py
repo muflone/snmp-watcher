@@ -56,8 +56,8 @@ parser_group = parser.add_argument_group('Autodetection options')
 parser_group.add_argument('-v', '--version',
                           type=str,
                           action='store',
-                          choices=('v1', 'v2c'),
-                          default='v1',
+                          choices=('1', '2c'),
+                          default='1',
                           help='SNMP version to use')
 parser_group.add_argument('-c', '--community',
                           type=str,

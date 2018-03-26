@@ -91,8 +91,8 @@ class SNMP(object):
         # Instance a SNMP GET command
         cmdgen = getCmd(SnmpEngine(),
                         CommunityData(self.host.community,
-                                      mpModel={'v1': 0,
-                                               'v2c': 1
+                                      mpModel={'1': 0,
+                                               '2c': 1
                                               }[self.host.version]),
                         UdpTransportTarget((self.host.hostname,
                                             self.host.port)),
@@ -111,7 +111,7 @@ class SNMP(object):
                 raise Exception(errorIndication)
             # If v1 version was requested we can safely ignore errorStatus = 2
             # for "No Such Object currently exists at this OID" errors
-            if errorStatus and (self.host.version == 'v1' and errorStatus != 2):
+            if errorStatus and (self.host.version == '1' and errorStatus != 2):
                 raise Exception('%d at %s' % (
                     errorStatus,
                     errorIndex and varBinds[int(errorIndex)-1] or '?'
