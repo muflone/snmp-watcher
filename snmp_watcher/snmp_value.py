@@ -24,7 +24,7 @@ from pysnmp.proto.rfc1905 import noSuchObject
 
 class SNMPValue(object):
     """SNMPValue object containing value name, SNMP oid and its value.
-    
+
     The name will contain a pure clean OID as obtained from a SNMPGET response,
     while the meta_oid will contain the original OID before any substitution"""
     def __init__(self, meta_oid, name, value):

@@ -46,6 +46,12 @@ parser.add_argument('-a', '--autodetect',
                     dest='autodetect',
                     action='store_true',
                     help='autodetection mode')
+parser.add_argument('-o', '--output',
+                    type=str,
+                    action='store',
+                    choices=('sequence', ),
+                    default='sequence',
+                    help='output format to use')
 parser.add_argument('destinations',
                     type=str,
                     action='store',
@@ -91,9 +97,9 @@ for filename in os.listdir(arguments.models or DIR_MODELS):
                                filename=os.path.join(DIR_MODELS, filename),
                                include_groups=arguments.groups)
     if model.autodetect_oid:
-        autodetections[model.name] = { 'oid': model.autodetect_oid,
-                                       'value': model.autodetect_value
-                                     }
+        autodetections[model.name] = {'oid': model.autodetect_oid,
+                                      'value': model.autodetect_value
+                                      }
     Common.set_model(model_name, model)
 
 for item in arguments.destinations:
@@ -119,7 +125,7 @@ for item in arguments.destinations:
         try:
             values = host.get_values_from_oids(
                 dict((key, autodetections[key]['oid'])
-                for key in autodetections.keys()))
+                     for key in autodetections.keys()))
             # Search for a reply with the same OID and value
             model_found = None
             for key in values:
@@ -141,7 +147,8 @@ for item in arguments.destinations:
                 host.set_model(model_found)
                 if arguments.no_scan:
                     # Show only the detected model
-                    print 'Host %s, model detected: %s' % (host.name, model_found)
+                    print 'Host %s, model detected: %s' % (host.name,
+                                                           model_found)
                 else:
                     # Add host to the list of hosts to check
                     Common.add_host(host)

@@ -22,7 +22,7 @@
 class Common(object):
     __models = {}
     __hosts = []
-    
+
     @classmethod
     def get_model(cls, name):
         """Get a model by its name"""

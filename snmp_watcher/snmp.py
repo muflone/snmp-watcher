@@ -93,7 +93,7 @@ class SNMP(object):
                         CommunityData(self.host.community,
                                       mpModel={'1': 0,
                                                '2c': 1
-                                              }[self.host.version]),
+                                               }[self.host.version]),
                         UdpTransportTarget((self.host.hostname,
                                             self.host.port)),
                         ContextData()
