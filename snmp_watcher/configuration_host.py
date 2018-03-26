@@ -20,7 +20,7 @@
 
 from .common import Common
 from .configuration_object import ConfigurationObject
-from .snmp import SNMP
+from .snmp.snmp import SNMP
 
 
 SECTION_HOST = 'Host'
