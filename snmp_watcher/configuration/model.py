@@ -20,7 +20,7 @@
 
 from collections import OrderedDict
 
-from .configuration_object import ConfigurationObject
+from .object import ConfigurationObject
 
 SECTION_GENERAL = 'General'
 

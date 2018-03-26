@@ -18,9 +18,9 @@
 #  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
 ##
 
-from .common import Common
-from .configuration_object import ConfigurationObject
-from .snmp.snmp import SNMP
+from .object import ConfigurationObject
+from ..common import Common
+from ..snmp.snmp import SNMP
 
 
 SECTION_HOST = 'Host'

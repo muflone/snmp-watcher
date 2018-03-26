@@ -26,9 +26,9 @@ import argparse
 
 from snmp_watcher.common import Common
 from snmp_watcher.constants import DIR_MODELS
-from snmp_watcher.configuration_object import ConfigurationObject
-from snmp_watcher.configuration_model import ConfigurationModel
-from snmp_watcher.configuration_host import ConfigurationHost
+from snmp_watcher.configuration.object import ConfigurationObject
+from snmp_watcher.configuration.model import ConfigurationModel
+from snmp_watcher.configuration.host import ConfigurationHost
 
 # Parse command line arguments
 parser = argparse.ArgumentParser(description='Read SNMP values')
