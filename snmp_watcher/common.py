@@ -18,7 +18,27 @@
 #  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
 ##
 
-from collections import OrderedDict
 
-models = {}
-hosts = []
+class Common(object):
+    __models = {}
+    __hosts = []
+    
+    @classmethod
+    def get_model(cls, name):
+        """Get a model by its name"""
+        return cls.__models[name]
+
+    @classmethod
+    def set_model(cls, name, model):
+        """Set a model"""
+        cls.__models[name] = model
+
+    @classmethod
+    def add_host(cls, host):
+        """Add a new host to the list"""
+        cls.__hosts.append(host)
+
+    @classmethod
+    def get_hosts(cls):
+        """Get the hosts list"""
+        return cls.__hosts

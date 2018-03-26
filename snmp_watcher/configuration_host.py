@@ -18,7 +18,7 @@
 #  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
 ##
 
-import snmp_watcher.common
+from .common import Common
 from .configuration_object import ConfigurationObject
 from .snmp import SNMP
 
@@ -56,7 +56,7 @@ class ConfigurationHost(ConfigurationObject):
         self.version = self.get(SECTION_HOST, OPTION_VERSION)
         self.community = self.get(SECTION_HOST, OPTION_COMMUNITY)
         model_name = self.get(SECTION_HOST, OPTION_MODEL)
-        self.model = snmp_watcher.common.models[model_name]
+        self.model = Common.get_model(model_name)
 
     def set_options(self, destination, description, port, version, community):
         """Set data for host autodetection"""
@@ -69,7 +69,7 @@ class ConfigurationHost(ConfigurationObject):
 
     def set_model(self, model_name):
         """Set model"""
-        self.model = snmp_watcher.common.models[model_name]
+        self.model = Common.get_model(model_name)
 
     def get_values(self):
         """Get the values for the model OIDs via SNMP"""

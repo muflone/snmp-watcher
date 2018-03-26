@@ -24,7 +24,7 @@ import os
 import os.path
 import argparse
 
-import snmp_watcher.common
+from snmp_watcher.common import Common
 from snmp_watcher.constants import DIR_MODELS
 from snmp_watcher.configuration_object import ConfigurationObject
 from snmp_watcher.configuration_model import ConfigurationModel
@@ -94,7 +94,7 @@ for filename in os.listdir(arguments.models or DIR_MODELS):
         autodetections[model.name] = { 'oid': model.autodetect_oid,
                                        'value': model.autodetect_value
                                      }
-    snmp_watcher.common.models[model_name] = model
+    Common.set_model(model_name, model)
 
 for item in arguments.destinations:
     if arguments.model:
@@ -107,7 +107,7 @@ for item in arguments.destinations:
                          community=arguments.community)
         host.set_model(arguments.model)
         # Add host to the list of hosts to check
-        snmp_watcher.common.hosts.append(host)
+        Common.add_host(host)
     elif arguments.autodetect:
         # Autodetection mode
         host = ConfigurationHost()
@@ -144,7 +144,7 @@ for item in arguments.destinations:
                     print 'Host %s, model detected: %s' % (host.name, model_found)
                 else:
                     # Add host to the list of hosts to check
-                    snmp_watcher.common.hosts.append(host)
+                    Common.add_host(host)
         except Exception as error:
             print 'Host %s' % (host.name, )
             print '  Error: %s' % error
@@ -156,13 +156,13 @@ for item in arguments.destinations:
             host = ConfigurationHost()
             host.read_from_filename(item)
             host.load()
-            snmp_watcher.common.hosts.append(host)
+            Common.add_host(host)
         else:
             print '%s is not a file, it will be skipped' % item
 
 
 # Print results
-for host in snmp_watcher.common.hosts:
+for host in Common.get_hosts():
     print 'Host %s (%s) (%s)' % (host.name, host.hostname, host.description)
     try:
         values = host.get_values()
