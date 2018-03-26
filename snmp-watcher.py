@@ -46,11 +46,11 @@ parser.add_argument('-a', '--autodetect',
                     dest='autodetect',
                     action='store_true',
                     help='autodetection mode')
-parser.add_argument('configuration',
+parser.add_argument('destinations',
                     type=str,
                     action='store',
                     nargs='+',
-                    help='configuration file')
+                    help='destination host or configuration file')
 # Add arguments for autodetection mode
 parser_group = parser.add_argument_group('Autodetection options')
 parser_group.add_argument('-v', '--version',
@@ -96,7 +96,7 @@ for filename in os.listdir(arguments.models or DIR_MODELS):
                                      }
     snmp_watcher.common.models[model_name] = model
 
-for item in arguments.configuration:
+for item in arguments.destinations:
     if arguments.model:
         # Use specific model mode
         host = ConfigurationHost()
