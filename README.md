@@ -1,4 +1,4 @@
-SNMP Watcher [![Build Status](https://travis-ci.org/muflone/snmp-watcher.svg?branch=master)](https://travis-ci.org/muflone/glivesnmp) [![Join the chat at https://gitter.im/muflone/glivesnmp](https://badges.gitter.im/muflone/glivesnmp.svg)](https://gitter.im/muflone/snmp-watcher?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+SNMP Watcher [![Build Status](https://travis-ci.org/muflone/snmp-watcher.svg?branch=master)](https://travis-ci.org/muflone/snmp-watcher)
 =====
 
 **Description:** Watch devices through SNMP.
