@@ -26,6 +26,7 @@ import argparse
 
 from snmp_watcher.common import Common
 from snmp_watcher.constants import DIR_MODELS
+
 from snmp_watcher.configuration.object import ConfigurationObject
 from snmp_watcher.configuration.model import ConfigurationModel
 from snmp_watcher.configuration.host import ConfigurationHost
@@ -46,12 +47,6 @@ parser.add_argument('-a', '--autodetect',
                     dest='autodetect',
                     action='store_true',
                     help='autodetection mode')
-parser.add_argument('-o', '--output',
-                    type=str,
-                    action='store',
-                    choices=('sequence', ),
-                    default='sequence',
-                    help='output format to use')
 parser.add_argument('destinations',
                     type=str,
                     action='store',
@@ -84,6 +79,14 @@ parser_group.add_argument('-M', '--model',
                           dest='model',
                           action='store',
                           help='use the specified model')
+# Add arguments for autodetection mode
+parser_group = parser.add_argument_group('Output options')
+parser_group.add_argument('-o', '--output',
+                          type=str,
+                          action='store',
+                          choices=('sequence', 'tab_single', 'tab_multiple'),
+                          default='sequence',
+                          help='output format to use')
 arguments = parser.parse_args()
 # If no groups were specified list all services groups
 if not arguments.groups:
