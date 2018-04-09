@@ -18,6 +18,7 @@ System Requirements
 * XDG library for Python 2.x
 * Distutils library for Python 2.x (usually shipped with Python distribution)
 * PySNMP (<http://snmplabs.com/pysnmp/>)
+* Tabulate (<https://bitbucket.org/astanin/python-tabulate>)
 
 Installation
 ------------
