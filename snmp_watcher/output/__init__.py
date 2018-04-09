@@ -20,8 +20,10 @@
 
 from .sequence import OutputSequence
 from .tab_single import OutputTabSingle
+from .tab_multiple import OutputTabMultiple
 
 __all__ = [
     OutputSequence.__name__,
     OutputTabSingle.__name__,
+    OutputTabMultiple.__name__,
 ]
