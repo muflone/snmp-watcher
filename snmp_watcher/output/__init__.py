@@ -19,7 +19,9 @@
 ##
 
 from .sequence import OutputSequence
+from .tab_single import OutputTabSingle
 
 __all__ = [
     OutputSequence.__name__,
+    OutputTabSingle.__name__,
 ]

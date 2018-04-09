@@ -31,7 +31,8 @@ from snmp_watcher.configuration.object import ConfigurationObject
 from snmp_watcher.configuration.model import ConfigurationModel
 from snmp_watcher.configuration.host import ConfigurationHost
 
-from snmp_watcher.output import OutputSequence
+from snmp_watcher.output import (OutputSequence,
+                                 OutputTabSingle)
 
 # Parse command line arguments
 parser = argparse.ArgumentParser(description='Read SNMP values')
@@ -86,9 +87,16 @@ parser_group = parser.add_argument_group('Output options')
 parser_group.add_argument('-o', '--output',
                           type=str,
                           action='store',
-                          choices=('sequence', ),
+                          choices=('sequence', 'tab_single'),
                           default='sequence',
                           help='output format to use')
+parser_group.add_argument('-s', '--style',
+                          type=str,
+                          action='store',
+                          choices=('plain', 'simple', 'grid', 'fancy_grid',
+                                   'pipe', 'orgtbl', 'presto', 'psql', 'rst'),
+                          default='plain',
+                          help='format style for tabular outputs')
 arguments = parser.parse_args()
 # If no groups were specified list all services groups
 if not arguments.groups:
@@ -176,6 +184,7 @@ for item in arguments.destinations:
 # Print results
 output_class, output_arguments = {
     'sequence': (OutputSequence, {}),
+    'tab_single': (OutputTabSingle, {'style': arguments.style}),
 }[arguments.output]
 output = output_class(**output_arguments)
 output.render()
